@@ -1,0 +1,68 @@
+{% extends "index.html" %}
+{% block title %}Tea expert{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row" style="height: calc(100vh - 100px);"> <!-- Adjusted height calculation -->
+        <div class="col-md-12">
+            <div class="card h-100">
+                <div class="card-header">
+                    Chat with tea expert
+                </div>
+                <div class="card-body" id="chat-box" style="overflow-y: auto;">
+                    <div class="bot-message">Holly tea! How can I assist you today?</div>
+                    <!-- Previous chat messages will be displayed here -->
+                </div>
+                <div class="card-footer">
+                    <form id="chat-form">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="user-input" placeholder="Type your message here...">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+$(document).ready(function() {
+    $('#chat-form').submit(function(event) {
+        event.preventDefault();
+        var userInput = $('#user-input').val();
+        addUserMessage(userInput);
+        $('#user-input').val('');
+
+        // Send user message to the server for processing
+        $.ajax({
+            url: '/ai/', // Assuming your Django endpoint is '/ai/'
+            method: 'POST',
+            data: {
+                'message': userInput
+            },
+            success: function(data) {
+                var aiResponse = data.response;
+                addBotMessage(aiResponse);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+});
+
+ // Function to add user message to chat box
+ function addUserMessage(message) {
+        $('#chat-box').append('<div class="user-message">' + message + '</div>');
+    }
+
+    // Function to add bot message to chat box
+    function addBotMessage(message) {
+        $('#chat-box').append('<div class="bot-message">' + message + '</div>');
+    }
+</script>
+{% endblock %}

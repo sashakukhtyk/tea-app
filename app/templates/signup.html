@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+{% block title %}signin{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h2>Sign up</h2>
+</div>
+
+<div class="form-container" >
+    <form action="/signup" method="post">
+    {% csrf_token %}    
+        <div class="form-group">
+            <label for="exampleInputUsername1">Username</label>
+            <input type="text" id="username" class="form-control" id="exampleInputUsername1" placeholder="Enter username" name="username" Required>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" id="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" name="email" Required>
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>       
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" id="pass1" class="form-control" id="exampleInputPassword1" placeholder="Password" name="pass1" Required>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword2">Password confirmation</label>
+            <input type="password" id="pass2" class="form-control" id="exampleInputPassword2" placeholder="Confirm password" name="pass2" Required>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign up</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "index.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% load static %}
+    {% for message in messages %}
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+        </button>
+        <strong>Holy tea!</strong> {{ message }}
+    </div>
+    {% endfor %}
+    
+    <b3></b3>
+   
+    <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            {% if user.is_authenticated %}
+            <h2 class="text-center"> Hello, {{ username }} ! </h2>
+            {% else %}
+            <h2 class="text-center"> Welcome to the tea world ! </h2>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body text-center">
+                <div class="stopwatch mb-3">
+                  <div class="form" id="showtm" style="font-size:21px; font-weight:800;">0 minutes : 0 seconds : 0 milliseconds</div>
+                </div>
+                <div class="form">
+                  <button class="btn btn-primary mr-2" onclick="startChr()"><i class="fas fa-play"></i></button>
+                  <button class="btn btn-secondary mr-2" onclick="stopChr()"><i class="fas fa-stop"></i></button>
+                  <button class="btn btn-danger" onclick="resetChr()"><i class="fas fa-redo"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+     <script src="{% static  'js/script.js'%}" crossorigin="anonymous"></script>     
+      
+{% endblock %}
