@@ -2,67 +2,95 @@
 {% block title %}Tea expert{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row" style="height: calc(100vh - 100px);"> <!-- Adjusted height calculation -->
-        <div class="col-md-12">
-            <div class="card h-100">
-                <div class="card-header">
-                    Chat with tea expert
-                </div>
-                <div class="card-body" id="chat-box" style="overflow-y: auto;">
-                    <div class="bot-message">Holly tea! How can I assist you today?</div>
-                    <!-- Previous chat messages will be displayed here -->
-                </div>
-                <div class="card-footer">
-                    <form id="chat-form">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="user-input" placeholder="Type your message here...">
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-primary">Send</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+<div class="chat-container">
+    <div class="card flex-grow-1">
+      <div class="card-header bg-primary text-white">Chat</div>
+      <div class="card-body messages-box">
+        
+        <ul class="list-unstyled messages-list">
+          
+          <li class="message received">
+            <div class="message-text">
+              <div class="message-sender">
+                <b>AI Chatbot</b>
+              </div>
+              <div class="message-content">
+                Hi, I am your AI Chatbot, you can ask me anything.
+              </div>
             </div>
-        </div>
+          </li>
+        </ul>
+        
+      </div>
+      <br><br>
+      <br><br>
+      <br><br>
     </div>
-</div>
+    <form class="message-form">
+      {%csrf_token%}
+      <div class="input-group">
+        <input type="text" class="form-control message-input" placeholder="Type your message...">
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-primary btn-send">Send</button>
+        </div>
+      </div>
+    </form>
+  </div>
 
 
 <script>
-$(document).ready(function() {
-    $('#chat-form').submit(function(event) {
-        event.preventDefault();
-        var userInput = $('#user-input').val();
-        addUserMessage(userInput);
-        $('#user-input').val('');
+    const messagesList = document.querySelector('.messages-list');
+    const messageForm = document.querySelector('.message-form');
+    const messageInput = document.querySelector('.message-input');
 
-        // Send user message to the server for processing
-        $.ajax({
-            url: '/ai/', // Assuming your Django endpoint is '/ai/'
-            method: 'POST',
-            data: {
-                'message': userInput
-            },
-            success: function(data) {
-                var aiResponse = data.response;
-                addBotMessage(aiResponse);
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-            }
-        });
-    });
-});
+    messageForm.addEventListener('submit', (event) => {
+    event.preventDefault();
 
- // Function to add user message to chat box
- function addUserMessage(message) {
-        $('#chat-box').append('<div class="user-message">' + message + '</div>');
+    const message = messageInput.value.trim();
+    if (message.length === 0) {
+      return;
     }
 
-    // Function to add bot message to chat box
-    function addBotMessage(message) {
-        $('#chat-box').append('<div class="bot-message">' + message + '</div>');
-    }
+    const messageItem = document.createElement('li');
+    messageItem.classList.add('message', 'sent');
+    messageItem.innerHTML = `
+        <div class="message-text">
+            <div class="message-sender">
+                <b>You</b>
+            </div>
+            <div class="message-content">
+                ${message}
+            </div>
+        </div>`;
+    messagesList.appendChild(messageItem);
+
+    messageInput.value = '';
+
+    fetch('', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        'csrfmiddlewaretoken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        'message': message
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        const response = data.response;
+        const messageItem = document.createElement('li');
+        messageItem.classList.add('message', 'received');
+        messageItem.innerHTML = `
+        <div class="message-text">
+            <div class="message-sender">
+              <b>AI Chatbot</b>
+            </div>
+            <div class="message-content">
+                ${response}
+            </div>
+        </div>
+          `;
+        messagesList.appendChild(messageItem);
+      });
+  });
 </script>
 {% endblock %}

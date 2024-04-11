@@ -1,11 +1,38 @@
-import openai
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.http import JsonResponse
+import openai
+
+
+openai_api_key = "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"
+openai.api_key = openai_api_key
+
+def ask_openai(message):
+    response = openai.ChatCompletion.create(
+        model = "gpt-4",
+        messages=[
+            {"role": "system", "content": "You are an helpful assistant."},
+            {"role": "user", "content": message},
+        ]
+    )
+    
+    answer = response.choices[0].message.content.strip()
+    return answer
 
 # Create your views here.
+def ai(request):
+    if request.method == 'POST':
+        message = request.POST.get('message')
+        response = ask_openai(message)
+
+        return JsonResponse({'message': message, 'response': response})
+
+    return render(request, 'ai.html')
+
+
+
 def home(request):
     return render(request, "home.html")
 
@@ -17,12 +44,12 @@ def signup(request):
         email = request.POST.get("email")
         password = request.POST.get("pass1")
         password2 = request.POST.get("pass2")
-        
+
 
         if password != password2:
             messages.error(request, "Passwords do not match.")
             return redirect("/signup")
-        
+
         # Creating a user without validating inputs may lead to security vulnerabilities.
         try:
             # Use Django's built-in `create_user` method to handle password hashing.
@@ -31,11 +58,11 @@ def signup(request):
             # Handle exceptions, such as a unique constraint violation for username or email.
             messages.error(request, f"Failed to create user: {e}")
             return redirect("/signup")
-        
+
         messages.success(request, "Your account has been successfully created!")
-        
+
         return redirect("/login")
-    
+
     else:
         return render(request, "signup.html")
 
@@ -57,26 +84,6 @@ def user_login(request):
     else:
         return render(request, "login.html")
 
-
-def ai(request):
-    openai.api_key = "YOUR_OPENAI_API_KEY_HERE"
-    if request.method == "POST":
-        if 'message' in request.POST:
-            user_message = request.POST['message']
-            
-            response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=[{"role": "user", "content": user_message}]
-            )
-            full_response = response.choices[0].message.content.strip()
-
-            return JsonResponse({'response': full_response})
-        else:
-            return JsonResponse({'error': 'Invalid request'})
-    else:
-        return render(request, "ai.html")
-    
-    
 
 def user_logout(request):
     logout(request)
