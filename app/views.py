@@ -93,6 +93,7 @@ def user_logout(request):
 
 
 def catalog(request):
+    
     return render(request, "catalog.html")
 
 
