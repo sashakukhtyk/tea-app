@@ -11,51 +11,19 @@
     </div>
 
     <div class="row">
+
+        {% for product in products %}
         <div class="col-md-4">
             <div class="card mb-4">
-                <img src="{% static 'images/green_tea.jpg' %}" class="card-img-top" alt="Green Tea">
+                <img src="{{ product.image.url }}" class="card-img-top" alt="Green Tea">
                 <div class="card-body">
-                    <h5 class="card-title">Green Tea</h5>
-                    <p class="card-text">Green Chinese tea refers to a broad category of teas 
-                        that are produced in China and undergo minimal oxidation during processing. 
-                        The leaves are typically withered, fixed (heated to stop oxidation), rolled, 
-                        and dried to preserve their green color and fresh flavor. 
-                        There are numerous varieties of green Chinese tea, each with its own unique 
-                        characteristics, flavors, and production methods.</p>
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description}}</p>
                     <a href="#" class="btn btn-primary">Learn More</a>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <img src="{% static 'images/shu_pu_ehr.jpg' %}" class="card-img-top" alt="Black Tea">
-                <div class="card-body">
-                    <h5 class="card-title">Shu pu ehr</h5>
-                    <p class="card-text">Shu pu'er, also known as ripe pu'er or cooked pu'er, 
-                        is a type of fermented tea produced primarily in the Yunnan province of China. 
-                        It undergoes a unique fermentation process that involves piling, dampening, 
-                        and turning the leaves over a period of weeks to months. 
-                        This fermentation process creates a distinctive earthy, 
-                        mellow flavor profile with hints of woodiness, reminiscent of aged wine or forest floor.</p>
-                    <a href="#" class="btn btn-primary">Learn More</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <img src="{% static 'images/oolong_tea.jpg' %}" class="card-img-top" alt="Herbal Tea">
-                <div class="card-body">
-                    <h5 class="card-title">Oolong tea</h5>
-                    <p class="card-text">Oolong tea, also known as wulong tea, is a traditional 
-                        Chinese tea that falls somewhere between green tea and black tea in terms of 
-                        oxidation levels. The leaves of oolong tea are withered under the sun, oxidized, 
-                        and then curled or rolled before being fired to halt oxidation. 
-                        This partial oxidation process results in a wide range of flavors and aromas, 
-                        depending on the specific type of oolong and how it's processed.</p>
-                    <a href="#" class="btn btn-primary">Learn More</a>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </div>
 

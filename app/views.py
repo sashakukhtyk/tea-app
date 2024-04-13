@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.http import JsonResponse
 import openai
+from .models import Product
 
 
 openai_api_key = "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"
@@ -93,8 +94,9 @@ def user_logout(request):
 
 
 def catalog(request):
-    
-    return render(request, "catalog.html")
+    products = Product.objects.all()
+
+    return render(request, "catalog.html", {'products' : products})
 
 
 def collection(request):
