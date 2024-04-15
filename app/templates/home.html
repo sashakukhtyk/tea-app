@@ -18,8 +18,9 @@
     <div class="container">
         <div class="row justify-content-center">
           <div class="col-md-6">
+            <br/>
             {% if user.is_authenticated %}
-            <h2 class="text-center"> Hello, {{ username }} ! </h2>
+            <h2 class="text-center"> Hello, {{ user.username }} ! </h2>
             {% else %}
             <h2 class="text-center"> Welcome to the tea world ! </h2>
             {% endif %}

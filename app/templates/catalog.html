@@ -4,6 +4,7 @@
 {% block content %}
 {% load static %}
 <div class="container">
+    <br/>
     <div class="row">
         <div class="col-md-12">
             <h1 class="text-center mb-4">Explore Our Tea Catalog</h1>
@@ -19,7 +20,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ product.name }}</h5>
                     <p class="card-text">{{ product.description}}</p>
-                    <a href="#" class="btn btn-primary">Learn More</a>
+                    <a href="{% url 'Product' product.id %}" class="btn btn-primary">Learn More</a>
                 </div>
             </div>
         </div>

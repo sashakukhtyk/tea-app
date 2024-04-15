@@ -38,6 +38,18 @@ def home(request):
     return render(request, "home.html")
 
 
+def catalog(request):
+    products = Product.objects.all()
+
+    return render(request, "catalog.html", {'products' : products})
+
+
+def product(request,pk):
+    product = Product.objects.get(id=pk)
+
+    return render(request, "product.html", {'product' : product})
+
+
 def signup(request):
     if request.method == "POST":
 
@@ -93,10 +105,7 @@ def user_logout(request):
 
 
 
-def catalog(request):
-    products = Product.objects.all()
 
-    return render(request, "catalog.html", {'products' : products})
 
 
 def collection(request):
