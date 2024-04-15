@@ -10,6 +10,7 @@ from .models import Product
 openai_api_key = "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"
 openai.api_key = openai_api_key
 
+
 def ask_openai(message):
     response = openai.ChatCompletion.create(
         model = "gpt-4",
@@ -21,6 +22,7 @@ def ask_openai(message):
     
     answer = response.choices[0].message.content.strip()
     return answer
+
 
 # Create your views here.
 def ai(request):
@@ -79,6 +81,7 @@ def signup(request):
     else:
         return render(request, "signup.html")
 
+
 def user_login(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -102,10 +105,6 @@ def user_logout(request):
     logout(request)
     messages.success(request, "Log out succesfully !")
     return redirect("/")
-
-
-
-
 
 
 def collection(request):
