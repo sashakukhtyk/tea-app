@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.http import JsonResponse
@@ -106,6 +107,8 @@ def user_logout(request):
     messages.success(request, "Log out succesfully !")
     return redirect("/")
 
+
+@login_required
 def collection_add(request,pk):
      product = get_object_or_404(Product,pk=pk)
      if request.user not in product.favourite.all():
@@ -113,6 +116,7 @@ def collection_add(request,pk):
      return redirect('my_collection')
 
 
+@login_required
 def collection_delete(request,pk):
      product = get_object_or_404(Product,pk=pk)
      if request.user in product.favourite.all():
@@ -120,6 +124,7 @@ def collection_delete(request,pk):
      return redirect('my_collection')
 
 
+@login_required
 def my_collection(request):
     products = Product.objects.all()
     context = {'products': products}
