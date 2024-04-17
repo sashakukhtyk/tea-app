@@ -12,11 +12,6 @@ form {
   width: 300px; /* Adjust width as needed */
 }
 
-.stopwatch {
-  border: 2px solid #000;
-  padding: 10px;
-  border-radius: 5px;
-}
 .chat-container {
   max-width: 800px; /* Increased max-width for more space */
   margin: 0 auto;
