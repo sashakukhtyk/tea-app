@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.http import JsonResponse
 import openai
+import random
 from .models import Product
 
 
@@ -38,7 +39,19 @@ def ai(request):
 
 
 def home(request):
-    return render(request, "home.html")
+     # Get all products from the database
+    products = Product.objects.all()
+
+    # Check if there are any products
+    if products:
+        # Select a random product from the queryset
+        random_product = random.choice(products)
+
+        # Pass the random product to the template
+        return render(request, "home.html", {'random_product': random_product})
+    else:
+        # If there are no products, pass an empty context
+        return render(request, "home.html", {})
 
 
 def catalog(request):

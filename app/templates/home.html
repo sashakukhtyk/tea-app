@@ -28,25 +28,23 @@
         </div>
       </div>
 
-      <div class="container">
+      <div class="container-fluid mt-5">
         <div class="row justify-content-center">
-          <div class="col-md-6">
-            <div class="card">
-              <div class="card-body text-center">
-                <div class="stopwatch mb-3">
-                  <div class="form" id="showtm" style="font-size:21px; font-weight:800;">0 minutes : 0 seconds : 0 milliseconds</div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img src="{{ random_product.image.url }}" class="card-img-top" alt="Green Tea">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ random_product.name }}</h5>
+                        <a href="{% url 'Product' random_product.pk %}" class="btn btn-primary">Learn More</a>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'collection_add' random_product.pk %}" class="btn btn-primary"> Add </a>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="form">
-                  <button class="btn btn-primary mr-2" onclick="startChr()"><i class="fas fa-play"></i></button>
-                  <button class="btn btn-secondary mr-2" onclick="stopChr()"><i class="fas fa-stop"></i></button>
-                  <button class="btn btn-danger" onclick="resetChr()"><i class="fas fa-redo"></i></button>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-      
+    </div>
+
      <script src="{% static  'js/script.js'%}" crossorigin="anonymous"></script>     
       
 {% endblock %}

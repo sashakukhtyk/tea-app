@@ -19,7 +19,7 @@
             {% if request.user in product.favourite.all %}
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
-                <td>{{ product.name }}</td>
+                <td >{{ product.name }}</td>
                 <td>
                     <a type="button" href="{% url 'collection_delete' product.pk %}" class="btn btn-danger delete-product"> Remove </a>
                 </td>
