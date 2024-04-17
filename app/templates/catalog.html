@@ -21,6 +21,7 @@
                     <h5 class="card-title">{{ product.name }}</h5>
                     <p class="card-text">{{ product.description}}</p>
                     <a href="{% url 'Product' product.id %}" class="btn btn-primary">Learn More</a>
+                    <a  href="{% url 'collection_add' product.pk %}" class="btn btn-primary"> Add </a>
                 </div>
             </div>
         </div>

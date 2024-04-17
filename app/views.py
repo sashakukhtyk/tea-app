@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -106,6 +106,21 @@ def user_logout(request):
     messages.success(request, "Log out succesfully !")
     return redirect("/")
 
+def collection_add(request,pk):
+     product = get_object_or_404(Product,pk=pk)
+     if request.user not in product.favourite.all():
+         product.favourite.add(request.user)
+     return redirect('my_collection')
 
-def collection(request):
-    return render(request, "collection.html")
+
+def collection_delete(request,pk):
+     product = get_object_or_404(Product,pk=pk)
+     if request.user in product.favourite.all():
+         product.favourite.remove(request.user)
+     return redirect('my_collection')
+
+
+def my_collection(request):
+    products = Product.objects.all()
+    context = {'products': products}
+    return render(request, 'collection_summary.html', context)
