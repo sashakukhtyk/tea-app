@@ -1,23 +1,23 @@
-from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
+import openai
+import random
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib import messages
 from django.http import JsonResponse
-import openai
-import random
+from django.shortcuts import get_object_or_404, redirect, render
 from .models import Product
 
-
+# Set up OpenAI API key
 openai_api_key = "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"
 openai.api_key = openai_api_key
 
-
+# Function to ask OpenAI for a response
 def ask_openai(message):
     response = openai.ChatCompletion.create(
-        model = "gpt-4",
+        model="gpt-4",
         messages=[
-            {"role": "system", "content": "You are an helpful assistant."},
+            {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": message},
         ]
     )
@@ -26,7 +26,7 @@ def ask_openai(message):
     return answer
 
 
-# Create your views here.
+# View for AI chat functionality
 def ai(request):
     if request.method == 'POST':
         message = request.POST.get('message')
@@ -37,7 +37,7 @@ def ai(request):
     return render(request, 'ai.html')
 
 
-
+# Home view
 def home(request):
     # Get all products from the database
     products = Product.objects.all()
@@ -54,37 +54,37 @@ def home(request):
         return render(request, "home.html", {})
 
 
+# Catalog view
 def catalog(request):
     products = Product.objects.all()
 
     return render(request, "catalog.html", {'products' : products})
 
 
-def product(request,pk):
+# Product detail view
+def product(request, pk):
     product = Product.objects.get(id=pk)
 
     return render(request, "product.html", {'product' : product})
 
 
+# User signup view
 def signup(request):
     if request.method == "POST":
-
         username = request.POST.get("username")
         email = request.POST.get("email")
         password = request.POST.get("pass1")
         password2 = request.POST.get("pass2")
 
-
         if password != password2:
             messages.error(request, "Passwords do not match.")
             return redirect("/signup")
 
-        # Creating a user without validating inputs may lead to security vulnerabilities.
         try:
-            # Use Django's built-in `create_user` method to handle password hashing.
+            # Use Django's built-in `create_user` method to handle password hashing
             myuser = User.objects.create_user(username, email, password)
         except Exception as e:
-            # Handle exceptions, such as a unique constraint violation for username or email.
+            # Handle exceptions, such as a unique constraint violation for username or email
             messages.error(request, f"Failed to create user: {e}")
             return redirect("/signup")
 
@@ -96,6 +96,7 @@ def signup(request):
         return render(request, "signup.html")
 
 
+# User login view
 def user_login(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -115,12 +116,14 @@ def user_login(request):
         return render(request, "login.html")
 
 
+# User logout view
 def user_logout(request):
     logout(request)
-    messages.success(request, "Log out succesfully !")
+    messages.success(request, "Log out successfully!")
     return redirect("/")
 
 
+# Add product to collection view
 @login_required
 def collection_add(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -133,6 +136,7 @@ def collection_add(request, pk):
         return redirect(request.META.get('HTTP_REFERER'))
 
 
+# Remove product from collection view
 @login_required
 def collection_delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -145,6 +149,7 @@ def collection_delete(request, pk):
         return redirect('my_collection')
 
 
+# View for user's collection
 @login_required
 def my_collection(request):
     products = Product.objects.all()

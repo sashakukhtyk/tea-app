@@ -24,12 +24,14 @@
             <div class="col-md-4">
                 <div class="card mb-4">
                     <br/>
+                    {% if random_product and random_product.pk %} 
                     <h3 class="text-center"> Here is the tea you must try today: </h3>
                     <img src="{{ random_product.image.url }}" class="card-img-top" alt="Green Tea">
                     <div class="card-body">
                         <h5 class="card-title">{{ random_product.name }}</h5>
                         <a href="{% url 'Product' random_product.pk %}" class="btn btn-primary">Learn More</a>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
