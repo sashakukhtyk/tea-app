@@ -3,15 +3,6 @@
 
 {% block content %}
 {% load static %}
-    {% for message in messages %}
-    <div class="alert alert-primary alert-dismissible fade show" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            <span class="sr-only">Close</span>
-        </button>
-        <strong>Holy tea!</strong> {{ message }}
-    </div>
-    {% endfor %}
     
     <b3></b3>
    
@@ -32,13 +23,12 @@
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <div class="card mb-4">
+                    <br/>
+                    <h3 class="text-center"> Here is the tea you must try today: </h3>
                     <img src="{{ random_product.image.url }}" class="card-img-top" alt="Green Tea">
                     <div class="card-body">
                         <h5 class="card-title">{{ random_product.name }}</h5>
                         <a href="{% url 'Product' random_product.pk %}" class="btn btn-primary">Learn More</a>
-                        {% if user.is_authenticated %}
-                        <a href="{% url 'collection_add' random_product.pk %}" class="btn btn-primary"> Add </a>
-                        {% endif %}
                     </div>
                 </div>
             </div>

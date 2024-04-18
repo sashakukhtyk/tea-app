@@ -39,7 +39,7 @@ def ai(request):
 
 
 def home(request):
-     # Get all products from the database
+    # Get all products from the database
     products = Product.objects.all()
 
     # Check if there are any products
@@ -122,19 +122,27 @@ def user_logout(request):
 
 
 @login_required
-def collection_add(request,pk):
-     product = get_object_or_404(Product,pk=pk)
-     if request.user not in product.favourite.all():
-         product.favourite.add(request.user)
-     return redirect('my_collection')
+def collection_add(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.user not in product.favourite.all():
+        product.favourite.add(request.user)
+        messages.success(request, "Product added successfully!")
+        return redirect('my_collection')
+    else:
+        messages.error(request, "Product already in your collection.")
+        return redirect(request.META.get('HTTP_REFERER'))
 
 
 @login_required
-def collection_delete(request,pk):
-     product = get_object_or_404(Product,pk=pk)
-     if request.user in product.favourite.all():
-         product.favourite.remove(request.user)
-     return redirect('my_collection')
+def collection_delete(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.user in product.favourite.all():
+        product.favourite.remove(request.user)
+        messages.success(request, "Product removed successfully!")
+        return redirect('my_collection')
+    else:
+        messages.error(request, "You are not authorized to remove this product.")
+        return redirect('my_collection')
 
 
 @login_required
