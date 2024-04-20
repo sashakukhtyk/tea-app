@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .models import Product
 
 # Set up OpenAI API key
-openai_api_key = "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"
+openai_api_key = "YOUR_KEY"
 openai.api_key = openai_api_key
 
 # Function to ask OpenAI for a response
