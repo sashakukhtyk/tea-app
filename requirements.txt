@@ -1,2 +1,2 @@
-Django==3.2.9
-openai==0.12.1
+Django==5.0.3
+openai==0.28.0
