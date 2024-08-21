@@ -120,8 +120,9 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'assets'),
-    '/Users/oleksandrkukhtyk/Library/Mobile Documents/com~apple~CloudDocs/final project cs50/final_project/assets',
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 MEDIA_URL = 'media/'
